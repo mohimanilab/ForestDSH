@@ -47,7 +47,7 @@ test_r_cr is a flag that causes data to be generated according to the R / CR L1 
 
 Example usage: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 matrix_csv/matrix_1.csv -1
 
-Example usage with data file: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 matrix_csv/matrix_1.csv -1 test/sample_data.txt
+Example usage with data file: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 matrix_csv/matrix_1.csv -1 sample_data.txt
 
 Output
 
