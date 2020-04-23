@@ -45,9 +45,9 @@ qmatrix is an optional argument that should be a csv file representing the proba
 test_r_cr is a flag that causes data to be generated according to the R / CR L1 norm. Currently, we always create pairs with L1 norm less than R. Note, currently the R value is hardcoded in the cpp file.
 
 
-Example usage: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 test/matrix.csv -1
+Example usage: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 matrix_csv/matrix_1.csv -1
 
-Example usage with data file: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 test/matrix.csv -1 test/sample_data.txt
+Example usage with data file: ./ForestDSH 2000 10000 0.5 0.03125 0.03125 matrix_csv/matrix_1.csv -1 test/sample_data.txt
 
 Output
 
