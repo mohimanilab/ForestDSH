@@ -90,4 +90,4 @@ The output is in the following format:
 
 lsh\_simulated can be ran in the exact same manner as minhash\_simulated.
 
-lhfast and mhfast are the same as lsh\_simulated and minhash\_simulated respectively, but they use an estimate of 0.015ms for each false positive check instead of performing calculations on each positive
+lhfast and mhfast are the same as lsh\_simulated and minhash\_simulated respectively, but they use an estimate of 0.015ms for each positive check instead of performing checks on each positive. This speeds up the actual runtime at the cost of overestimating the time required.
