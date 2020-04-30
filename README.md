@@ -102,7 +102,7 @@ lhfast and mhfast are the same as lsh\_simulated and minhash\_simulated respecti
 
 mgf_converter converts .mgf files into files that can be read by ForestDSH, minhash, and LSH. It takes the following as arguments: 
 
-`./mgf\_converter <matrix> <infile> <outfile> <threshold> <S>`
+`./mgf_converter <matrix> <infile> <outfile> <threshold> <S>`
   
 The matrix file should be formatted the same as the ForestDSH matrix file.
 
@@ -120,7 +120,7 @@ BEGIN IONS
 
 <index 2>\t<value 2>
 
-etc.
+etc
 
 <index n>\t<value n>
 
