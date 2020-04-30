@@ -8,11 +8,15 @@ For compiling on the cluster, use the following
 
 /usr/bin/g++ lambda.cpp -o lambda -std=c++0x -O3
 
+/usr/bin/g++ mgf_converter.cpp -o mgf_converter -std=c++0x -O3
+
 /usr/bin/g++ lsh\_simulated.cpp common\_funcs.cpp -o lsh_simulated -std=c++0x -O3
 
 /usr/bin/g++ minhash\_simulated.cpp common\_funcs.cpp -o minhash_simulated -std=c++0x -O3
 
 # Running
+
+## ForestDSH
 
 ForestDSH takes in 8 arguments with additional options for a data file, Q matrix file, and a flag for R/CR based data generation.
 
@@ -68,6 +72,8 @@ Example usage (With R/CR data generation, user defined Q matrix):
 
 ./ForestDSH 2000 1000 0.5 0.03125 0.03125 ProbEst/matrix_S1000_R100_L2.csv -1 -qmatrix=ProbEst/matrix_S1000_R400_L2.csv -test_r_cr
 
+## minhash and LSH
+
 minhash\_simulated takes in the following as arguments:
 
 `./minhash_simulated <N> <b> <r> <p1> <p2> <p3> <p4> [<data>]`
@@ -91,3 +97,31 @@ The output is in the following format:
 lsh\_simulated can be ran in the exact same manner as minhash\_simulated.
 
 lhfast and mhfast are the same as lsh\_simulated and minhash\_simulated respectively, but they use an estimate of 0.015ms for each positive check instead of performing checks on each positive. This speeds up the actual runtime at the cost of overestimating the time required.
+
+## mgf_converter
+
+mgf_converter converts .mgf files into files that can be read by ForestDSH, minhash, and LSH. It takes the following as arguments: './mgf_converter <matrix> <infile> <outfile> <threshold> <S>'
+  
+The matrix file should be formatted the same as the ForestDSH matrix file.
+
+The infile is the .mgf file that you would like to convert. The outfile is the file to write the output to.
+
+Any true pair with a P/Q lower than the threshold will not be included in the outfile. To not use a threshold, use -1.
+
+S is the length of the strings that are being converted.
+
+The .mgf file should be formatted in a sparse format as follows, with a data point being defined by tab-separated index value pairs between the BEGIN IONS header and the END IONS footer:
+
+BEGIN IONS
+
+<index 1>\t<value 1>
+
+<index 2>\t<value 2>
+
+...
+
+<index n>\t<value n>
+
+END IONS
+
+The converted string will be a string of S 0s, with <value i> at <index i> for all i from 1 to n. Consecutive data points are assumed to be true pairs. For example, the first and second data points will be assumed to be true pairs, the third and fourth will be assumed to be true pairs, and so on.
