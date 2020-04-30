@@ -737,7 +737,7 @@ std::string convertString(std::string s) {
     return s;
 }
 
-void convertData(probs *prob, std::string file) {
+void convertData(probs *prob, std::string file, std::string out, double threshold) {
     std::string line;
     std::ifstream data (file);
     int id = 0;
@@ -759,10 +759,9 @@ void convertData(probs *prob, std::string file) {
                         }
                         else {
                             double pval = matchProbability(prob, xstrings.at(id) -> str, entry);
-                            double cut = 34.3749;
                             double qval = matchProbabilityQ(prob, xstrings.at(id) -> str, entry);
                             double val = pval / qval;
-                            if(isnan(val) || val < cut) {
+                            if(isnan(val) || val < threshold) {
                                 xstrings.pop_back();
                             }
                             else {
@@ -789,7 +788,7 @@ void convertData(probs *prob, std::string file) {
         std::cout << ystrings.size() << "\n";
         
         std::ofstream outfile;
-        outfile.open("data.txt");
+        outfile.open(out);
         for(int i = 0; i < xstrings.size(); i++) {
             std::string xstr = convertString(xstrings.at(i) -> str);
             std::string ystr = convertString(ystrings.at(i) -> str);
@@ -800,86 +799,39 @@ void convertData(probs *prob, std::string file) {
     }
 }
 
+larr read_matrix(std::string matrix_filename){
+    std::ifstream file(matrix_filename);
+    larr p;
+    const int MAXLINE = 256;
+    char line[MAXLINE];
+    char delim[] = ",";
+    char *token;
+    while(file) {
+        std::vector<double> newRow;
+        file.getline(line, MAXLINE);
+        if(line[0] == '\0') {
+            break;
+        }
+        token = strtok(line, delim);
+        newRow.push_back(atof(token));
+        while((token = strtok(NULL, delim)) != NULL) {
+            newRow.push_back(atof(token));
+        }
+        p.push_back(newRow);
+    }
+    return p;
+}
+
+
 int main(int argc, const char * argv[]) {
-    /*larr bmatrix;
-    bmatrix.push_back({48901,20403,7685,2437,413,106,95,71033});
-    bmatrix.push_back({20403,52428,36066,12311,2207,680,379,222715});
-    bmatrix.push_back({7685,36066,55254,41689,9110,2840,1769,519185});
-    bmatrix.push_back({2437,12311,41689,68825,25636,8623,6408,783342});
-    bmatrix.push_back({413,2207,9110,25636,40825,9746,7508,585162});
-    bmatrix.push_back({106,680,2840,8623,9746,30026,8239,459039});
-    bmatrix.push_back({95,379,1769,6408,7508,8239,90668,1182763});
-    bmatrix.push_back({71033,222715,519185,783342,585162,459039,1182763,1405650892});
-    
-    long double sum = 0;
-    
-    for(int i = 0; i < 8; i++) {
-        for(int j = 0; j < 8; j++) {
-            sum += bmatrix.at(i).at(j);
-        }
+    if(argc < 5) {
+        cout << "usage: ./mgf_converter <matrix> <infile> <outfile> <threshold>\n";   
     }
-    
-    for(int i = 0; i < 8; i++) {
-        for(int j = 0; j < 8; j++) {
-            bmatrix.at(i).at(j) /= sum;
-        }
-    }
-    
-    probs *b = set_pq_values(bmatrix);
-    std::vector<long double> binfo = geometricLambda(b);
-    std::cout << binfo.at(3) << "\n";*/
-    
-    larr pmatrix;
-    pmatrix.push_back({0.000125, 0.00005, 0.000000097, 0.000405});
-    pmatrix.push_back({0.00005, 0.00021, 0.0000062, 0.002});
-    pmatrix.push_back({0.000000097, 0.0000062, 0.000027, 0.000355});
-    pmatrix.push_back({0.000405, 0.002, 0.000355, 0.994005406});
+    larr pmatrix = read_matrix(argv[1]);
      
     probs *prob = set_pq_values(pmatrix);
     
-    //convertData(prob, "/Users/sean/Documents/test_100K_4rank.mgf");
-    
-    for(int i = 0; i < 4; i++) {
-        for(int j = 0; j < 4; j++) {
-            std::cout << (prob -> p).at(i).at(j) / (prob -> q).at(i).at(j) << " ";
-        }
-        std::cout << "\n";
-    }
-    
-    int N = 20459;
-    int S = 2000;
-    
-    std::vector<long double> info = {1.0390874586281873, 1.1226949489947105, 0.7779293468903407, 1.3263327592227026};
-    
-    /*std::pair<std::vector<istring*>, std::vector<istring*>> data = make_data(prob, N, S);
-    std::vector<istring*> xstrings = data.first;
-    std::vector<istring*> ystrings = data.second;*/
-    
-    /*std::vector<double> vals;
-     for(int i = 0; i < xstrings.size(); i++) {
-     vals.push_back(matchProbability(prob, xstrings.at(i) -> str, ystrings.at(i) -> str)/matchProbabilityQ(prob, xstrings.at(i) -> str, ystrings.at(i) -> str));
-     //vals.push_back(dkl(prob, xstrings.at(i) -> str, ystrings.at(i) -> str));
-     }
-    std::sort(vals.begin(), vals.end());
-    for(int i = 0; i < xstrings.size(); i += 100) {
-        std::cout << i << ": " << vals.at(i) << "\n";
-    }*/
-    
-    for(int i = 0; i < N; i++) {
-        found.push_back(false);
-    }
-    for(int i = 0; i < N; i++) {
-        std::vector<bool> row(N, false);
-        ufp.push_back(row);
-    }
-    
-    /*p1 = 0.125;
-    p2 = 1;
-    p3 = 1;
-    double candidate = runTest(prob, (int)xstrings.size(), xstrings, ystrings, info);
-    std::cout << "Time: " << candidate << "\n";*/
-    
-    realData(prob, info, "/Users/sean/Documents/test_100K_4rank.mgf");
+    convertData(prob, argv[2], argv[3], argv[4]);
     
     
     return 0;
