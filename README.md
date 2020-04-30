@@ -114,16 +114,16 @@ S is the length of the strings that are being converted.
 
 The .mgf file should be formatted in a sparse format as follows, with a data point being defined by tab-separated index value pairs between the BEGIN IONS header and the END IONS footer:
 
-`BEGIN IONS
+BEGIN IONS
 
-<index 1>\t<value 1>
+index 1\tvalue 1
 
-<index 2>\t<value 2>
+index 2\tvalue 2
 
 ...
 
-<index n>\t<value n>
+index n\tvalue n
 
-END IONS`
+END IONS
 
 The converted string will be a string of S 0s, with <value i> at <index i> for all i from 1 to n. Consecutive data points are assumed to be true pairs. For example, the first and second data points will be assumed to be true pairs, the third and fourth will be assumed to be true pairs, and so on.
