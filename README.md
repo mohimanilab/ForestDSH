@@ -120,8 +120,6 @@ BEGIN IONS
 
 <index 2>\t<value 2>
 
-etc
-
 <index n>\t<value n>
 
 END IONS
